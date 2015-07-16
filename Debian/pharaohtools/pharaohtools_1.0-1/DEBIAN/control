@@ -1,0 +1,11 @@
+Package: pharaohtools
+Version: 1.0-1
+Section: base
+Priority: optional
+Architecture: all
+Depends: git, php
+Installed-Size: 4000
+Maintainer: David Amanshia <phpengine@pharaohtools.com>
+Description: Pharaoh Tools
+ This will install all available Pharaoh Tools on your system
+ Enjoy

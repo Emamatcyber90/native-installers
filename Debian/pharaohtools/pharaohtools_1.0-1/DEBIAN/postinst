@@ -1,0 +1,2 @@
+git clone https://github.com/PharaohTools/ptconfigure && sudo php ptconfigure/install-silent
+ptconfigure pharaohtools install -yg

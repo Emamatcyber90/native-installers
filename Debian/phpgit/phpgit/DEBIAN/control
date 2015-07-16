@@ -1,0 +1,11 @@
+Package: php-git-pharaohtools
+Version: 1.0-1
+Section: base
+Priority: optional
+Architecture: all
+Depends: git, php5
+Installed-Size: 4000
+Maintainer: David Amanshia <phpengine@pharaohtools.com>
+Description: Pharaoh Tools
+ This will install PHP and Git, ready for Pharaoh Tools on your system
+ Enjoy
