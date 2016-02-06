@@ -15,11 +15,11 @@ class Virtufile extends VirtufileBase {
         $this->setDefaultConfig();
         $this->config["vm"]["name"] = basename(dirname(__FILE__)) ;
         $this->config["vm"]["gui_mode"] = "gui" ;
-        $this->config["vm"]["ostype"] = "Windows" ;
+        $this->config["vm"]["ostype"] = "Windows7" ;
         $this->config["vm"]["box_url"] = 'https://atlas.hashicorp.com/ferventcoder/boxes/win7pro-x64-nocm-lite/versions/0.1.0/providers/virtualbox.box' ;
         $this->config["vm"]["box"] = "windows7pro" ;
         $this->config["vm"]["memory"] = "4096" ;
-        $this->config["vm"]["graceful_halt_timeout"] = 10 ;
+        $this->config["vm"]["graceful_halt_timeout"] = 30 ;
         $this->config["vm"]["ssh_halt_timeout"] = 5 ;
         $this->config["network"]["natpf1"][] = "{$this->config["vm"]["name"]}_guestssh,tcp,,2244,,22";
         $this->config["network"]["natpf1"][] = "{$this->config["vm"]["name"]}_guestweb,tcp,,8044,,80";
@@ -46,14 +46,13 @@ class Virtufile extends VirtufileBase {
 
 //        $guestPath = "/vagrant" ;
         # Provisioning
-//        $this->config["vm"]["provision"][] =
-//        $this->config["vm"]["provision_up_complete"][] =
-//            array(
-//                "provisioner" => "Shell",
-//                "tool" => "shell",
-//                "target" => "guest",
-//                "default" => "MountShares"
-//            ) ;
+        $this->config["vm"]["provision"][] =
+            array(
+                "provisioner" => "Shell",
+                "tool" => "shell",
+                "target" => "guest",
+                "default" => "MountShares"
+            ) ;
 //        $this->config["vm"]["provision"][] =
 //        $this->config["vm"]["provision_up_complete"][] =
 //            array(
