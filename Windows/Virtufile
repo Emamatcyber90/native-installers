@@ -1,0 +1,79 @@
+<?php
+
+
+Namespace Model ;
+
+class Virtufile extends VirtufileBase {
+
+    public $config ;
+
+    public function __construct() {
+        $this->setConfig();
+    }
+
+    private function setConfig() {
+        $this->setDefaultConfig();
+        $this->config["vm"]["name"] = basename(dirname(__FILE__)) ;
+        $this->config["vm"]["gui_mode"] = "gui" ;
+        $this->config["vm"]["ostype"] = "Windows" ;
+        $this->config["vm"]["box_url"] = 'https://atlas.hashicorp.com/ferventcoder/boxes/win7pro-x64-nocm-lite/versions/0.1.0/providers/virtualbox.box' ;
+        $this->config["vm"]["box"] = "windows7pro" ;
+        $this->config["vm"]["memory"] = "4096" ;
+        $this->config["vm"]["graceful_halt_timeout"] = 10 ;
+        $this->config["vm"]["ssh_halt_timeout"] = 5 ;
+        $this->config["network"]["natpf1"][] = "{$this->config["vm"]["name"]}_guestssh,tcp,,2244,,22";
+        $this->config["network"]["natpf1"][] = "{$this->config["vm"]["name"]}_guestweb,tcp,,8044,,80";
+        $this->config["ssh"]["driver"] = "native" ;
+        $this->config["ssh"]["user"] = "vagrant" ;
+        $this->config["ssh"]["password"] = "vagrant" ;
+        $this->config["ssh"]["target"] = "127.0.0.1" ;
+        $this->config["ssh"]["port"] = "2244" ;
+
+        # Shared folder - This should map to the workstation environment vhost path parent...
+        $this->config["vm"]["shared_folders"][] =
+            array(
+                "name" => "{$this->config["vm"]["name"]}_Native_Installer_Files",
+                "host_path" => getcwd().DS,
+                "guest_path" => "C:\\Users\\vagrant\\{$this->config["vm"]["name"]}_Native_Installer_Files",
+            ) ;
+//        $this->config["vm"]["shared_folders"][] =
+//            array(
+//                "name" => "{$this->config["vm"]["name"]}_host_keys_path",
+//                "host_path" => $_SERVER["HOME"].DS.".ssh",
+//                "guest_path" => "/opt/hostkeys/",
+//            ) ;
+//        $guestPath = $this->config["vm"]["shared_folders"][0]["guest_path"] ;
+
+//        $guestPath = "/vagrant" ;
+        # Provisioning
+//        $this->config["vm"]["provision"][] =
+//        $this->config["vm"]["provision_up_complete"][] =
+//            array(
+//                "provisioner" => "Shell",
+//                "tool" => "shell",
+//                "target" => "guest",
+//                "default" => "MountShares"
+//            ) ;
+//        $this->config["vm"]["provision"][] =
+//        $this->config["vm"]["provision_up_complete"][] =
+//            array(
+//                "provisioner" => "Shell",
+//                "tool" => "shell",
+//                "target" => "guest",
+//                "default" => "PTConfigureInit"
+//            ) ;
+//        $this->config["vm"]["provision"][] =
+//        $this->config["vm"]["provision_up_complete"][] =
+//            array(
+//                "provisioner" => "PharaohTools",
+//                "tool" => "ptconfigure",
+//                "target" => "guest",
+//                "script" => $guestPath."/build/config/ptconfigure/cleofy/cm-ptv-box.php",
+//                "source" => "guest",
+//                "params" => array("root-dir" => $guestPath)
+//            ) ;
+
+        $this->config["vm"]["post_up_message"] = "Your Windows Box has been brought up.";
+    }
+
+}
