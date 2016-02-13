@@ -2,7 +2,7 @@
 REM BFCPEOPTIONSTART
 REM Advanced BAT to EXE Converter www.BatToExeConverter.com
 REM BFCPEEXE=\\VBOXSVR\Windows_Native_Installer_Files\pharaohtools.exe
-REM BFCPEICON=\\VBOXSVR\Windows_Native_Installer_Files\Code\logo-pharaoh-high.ico
+REM BFCPEICON=\\VBOXSVR\Windows_Native_Installer_Files\Code\logo-pharaoh-medium.ico
 REM BFCPEICONINDEX=1
 REM BFCPEEMBEDDISPLAY=1
 REM BFCPEEMBEDDELETE=1
@@ -39,13 +39,13 @@ echo "Downloading PHP with wget"
 wget.exe http://windows.php.net/downloads/releases/archives/php-7.0.2-Win32-VC14-x86.zip
 REM Deleting %SystemDrive%\php.zip if it exists
 echo "Deleting %SystemDrive%\php.zip if it exists"
-del /S /Q %SystemDrive%\php.zip
+if exist "%SystemDrive%\php.zip" del /S /Q %SystemDrive%\php.zip
 REM Overwrite %SystemDrive%\php.zip with fresh copy
 echo "Copying downloaded php from %TEMP%\php-7.0.2-Win32-VC14-x86.zip to %SystemDrive%\php.zip"
 copy %TEMP%\php-7.0.2-Win32-VC14-x86.zip %SystemDrive%\php.zip
 REM Delete the php dir if its there
 echo "Deleting %SystemDrive%\php if it exists"
-rmdir /S /Q %SystemDrive%\php
+if exist "%SystemDrive%\php" rmdir /S /Q %SystemDrive%\php
 REM Create new empty php directory
 echo "Making directory %SystemDrive%\php"
 if not exist "%SystemDrive%\php" mkdir %SystemDrive%\php
@@ -61,6 +61,17 @@ echo "Unzipping %SystemDrive%\php.zip"
 %SystemDrive%\unzip.exe %SystemDrive%\php.zip
 REM Get rid of the original php zip
 del /S /Q %SystemDrive%\php.zip
+REM put php in path
+echo "Set path to add is %SystemDrive%\php"
+setlocal EnableDelayedExpansion
+set "pathToInsert=%SystemDrive%\php"
+rem Check if pathToInsert is not already in system path
+if "!path:%pathToInsert%=!" equ "%path%" (
+    echo "Setting new path, adding ;%pathToInsert%"
+    setx PATH "%PATH%;%pathToInsert%"
+    timeout 30
+)
+endlocal
 REM Install the Visual Studio redistributable that php 7 needs
 echo "Installing Visual Studio Redistributable"
 start /wait %MYFILES%\vc_redist.x86.exe /install /passive /norestart
@@ -69,16 +80,24 @@ setlocal
 for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
 if "%version%" == "6.3" (
     echo "Found Windows Version: Windows 8.1"
-    wusa.exe %MYFILES%\Windows8.1-KB2999226-x86.msu
+    echo "Installing PHP DLL Requirement"
+    wusa.exe %MYFILES%\Windows8.1-KB2999226-x86.msu /quiet /norestart
 ) else if "%version%" == "6.2" (
     echo "Found Windows Version: Windows 8"
-    wusa.exe %MYFILES%\Windows8-RT-KB2999226-x86.msu
+    echo "Installing PHP DLL Requirement"
+    wusa.exe %MYFILES%\Windows8-RT-KB2999226-x86.msu /quiet /norestart
 ) else if "%version%" == "6.1" (
     echo "Found Windows Version: Windows 7"
-    wusa.exe %MYFILES%\Windows6.1-KB2999226-x86.msu
+REM    echo "Installing System Update Readiness Tool"
+REM    wusa.exe %MYFILES%\Windows6.1-KB947821-v35-x86.msu
+    echo "Installing PHP DLL Requirement"
+    wusa.exe %MYFILES%\Windows6.1-KB2999226-x86.msu /quiet /norestart
 ) else if "%version%" == "6.0" (
     echo "Found Windows Version: Windows Vista"
-    wusa.exe %MYFILES%\Windows6.0-KB2999226-x86.msu
+REM    echo "Installing System Update Readiness Tool"
+REM    wusa.exe %MYFILES%\Windows6.0-KB947821-v35-x86.msu
+    echo "Installing PHP DLL Requirement"
+    wusa.exe %MYFILES%\Windows6.0-KB2999226-x86.msu /quiet /norestart
 ) else (
     echo "Unable to calculate Windows Version to ensure Updates for "
 )
@@ -90,13 +109,12 @@ start /wait cmd /C choco install nuget.commandline -y
 REM Install Git
 echo "Installing the latest version of Git"
 start /wait cmd /C choco install git -y
-REM Download Pharaoh configure
-echo "Downloading the latest version of Pharaoh Configure"
-echo %TEMP%\ptconfigure-install
-timeout 5
 REM Get rid of the ptconfigure install files if they do exist
 if exist "%TEMP%\ptconfigure-install" rmdir /S /Q %TEMP%\ptconfigure-install
-REM clone 
+REM Download Pharaoh configure, insatll 
+echo "Downloading the latest version of Pharaoh Configure to..."
+echo %TEMP%\ptconfigure-install
+timeout 5
 start /wait cmd /C git clone https://github.com/PharaohTools/ptconfigure %TEMP%\ptconfigure-install
 timeout 5
 REM Install Pharaoh configure
@@ -105,7 +123,10 @@ start /wait cmd /C "%SystemDrive%\php\php.exe %TEMP%\ptconfigure-install\install
 REM Install Pharaoh Tools
 echo "Installing all available Pharaoh Tools"
 REM php Ptconfigure pharaohtools install -yg
-start /wait cmd /C %SystemDrive%\php\php.exe ptconfigure pharaohtools install -yg
+start /wait cmd /C "%SystemDrive%\php\php.exe %SystemDrive%\PharaohTools\ptconfigure.cmd ptvirtualize install -yg"
+start /wait cmd /C "%SystemDrive%\php\php.exe %SystemDrive%\PharaohTools\ptconfigure.cmd ptdeploy install -yg"
+start /wait cmd /C "%SystemDrive%\php\php.exe %SystemDrive%\PharaohTools\ptconfigure.cmd pttest install -yg"
+start /wait cmd /C "%SystemDrive%\php\php.exe %SystemDrive%\PharaohTools\ptconfigure.cmd ptbuild install -yg --with-webfaces"
 REM Thank You for installing message
 echo "Thank you for Installing the latest version of Pharaoh Tools"
 REM Ending
