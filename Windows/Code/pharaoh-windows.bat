@@ -70,6 +70,8 @@ if "!path:%pathToInsert%=!" equ "%path%" (
     echo "Setting new path, adding ;%pathToInsert%"
     setx PATH "%PATH%;%pathToInsert%"
     timeout 30
+) else (
+    echo "Path already includes %pathToInsert%"
 )
 endlocal
 REM Install the Visual Studio redistributable that php 7 needs
@@ -99,7 +101,7 @@ REM    wusa.exe %MYFILES%\Windows6.0-KB947821-v35-x86.msu
     echo "Installing PHP DLL Requirement"
     wusa.exe %MYFILES%\Windows6.0-KB2999226-x86.msu /quiet /norestart
 ) else (
-    echo "Unable to calculate Windows Version to ensure Updates for "
+    echo "Unable to calculate Windows Version to ensure Updates exist"
 )
 endlocal
 REM install Chocolatey
@@ -123,10 +125,10 @@ start /wait cmd /C "%SystemDrive%\php\php.exe %TEMP%\ptconfigure-install\install
 REM Install Pharaoh Tools
 echo "Installing all available Pharaoh Tools"
 REM php Ptconfigure pharaohtools install -yg
-start /wait cmd /C "%SystemDrive%\php\php.exe %SystemDrive%\PharaohTools\ptconfigure.cmd ptvirtualize install -yg"
-start /wait cmd /C "%SystemDrive%\php\php.exe %SystemDrive%\PharaohTools\ptconfigure.cmd ptdeploy install -yg"
-start /wait cmd /C "%SystemDrive%\php\php.exe %SystemDrive%\PharaohTools\ptconfigure.cmd pttest install -yg"
-start /wait cmd /C "%SystemDrive%\php\php.exe %SystemDrive%\PharaohTools\ptconfigure.cmd ptbuild install -yg --with-webfaces"
+start /wait cmd /C "%SystemDrive%\PharaohTools\ptconfigure.cmd ptvirtualize install -yg"
+start /wait cmd /C "%SystemDrive%\PharaohTools\ptconfigure.cmd ptdeploy install -yg"
+start /wait cmd /C "%SystemDrive%\PharaohTools\ptconfigure.cmd pttest install -yg"
+start /wait cmd /C "%SystemDrive%\PharaohTools\ptconfigure.cmd ptbuild install -yg --with-webfaces"
 REM Thank You for installing message
 echo "Thank you for Installing the latest version of Pharaoh Tools"
 REM Ending
