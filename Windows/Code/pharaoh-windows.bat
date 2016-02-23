@@ -65,19 +65,6 @@ echo "Unzipping %SystemDrive%\php.zip"
 %SystemDrive%\unzip.exe %SystemDrive%\php.zip
 REM Get rid of the original php zip
 del /S /Q %SystemDrive%\php.zip
-REM put php in path
-echo "Set path to add is %SystemDrive%\php"
-setlocal EnableDelayedExpansion
-set "pathToInsert=%SystemDrive%\php"
-rem Check if pathToInsert is not already in system path
-if "!path:%pathToInsert%=!" equ "%path%" (
-    echo "Setting new path, adding ;%pathToInsert%"
-    setx PATH "%PATH%%PHP%"
-    timeout 30
-) else (
-    echo "Path already includes %pathToInsert%"
-)
-endlocal
 REM Install the Visual Studio redistributable that php 7 needs
 echo "Installing Visual Studio Redistributable"
 rem pause
