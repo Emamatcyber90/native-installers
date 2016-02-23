@@ -39,7 +39,7 @@ echo "Changing directory to %TEMP%"
 cd %TEMP%
 REM Do the PHP Download 
 echo "Downloading PHP with wget"
-pause
+rem pause
 wget.exe http://windows.php.net/downloads/releases/archives/php-7.0.2-Win32-VC14-x86.zip
 REM Deleting %SystemDrive%\php.zip if it exists
 echo "Deleting %SystemDrive%\php.zip if it exists"
@@ -80,7 +80,7 @@ if "!path:%pathToInsert%=!" equ "%path%" (
 endlocal
 REM Install the Visual Studio redistributable that php 7 needs
 echo "Installing Visual Studio Redistributable"
-pause
+rem pause
 %MYFILES%\vc_redist.x86.exe /install /quiet
 timeout 15
 REM Get the right version to install the right MSU
@@ -112,38 +112,39 @@ REM    wusa.exe %MYFILES%\..\SourceFiles\Windows6.0-KB947821-v35-x86.msu
 endlocal
 REM install Chocolatey
 echo "Installing the Chocolatey Package Manager for Windows"
-pause
+rem pause
 start /wait cmd /C @powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))" && SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
 start /wait cmd /C choco install nuget.commandline -y
 REM Install Git
 echo "Installing the latest version of Git"
-pause
+rem pause
 start /wait cmd /C choco install git -y
 REM Get rid of the ptconfigure install files if they do exist
 if exist "%TEMP%\ptconfigure-install" rmdir /S /Q %TEMP%\ptconfigure-install
 REM Download Pharaoh configure, insatll 
 echo "Downloading the latest version of Pharaoh Configure to..."
-pause
+rem pause
 echo %TEMP%\ptconfigure-install
 timeout 5
+echo "Please wait for 30 seconds..its important"
 start /wait cmd /C git clone https://github.com/PharaohTools/ptconfigure %TEMP%\ptconfigure-install
-timeout 5
+timeout 30
 REM Install Pharaoh configure
 echo "Installing the latest version of Pharaoh Configure"
-pause
-start /wait cmd /C "%SystemDrive%\php\php.exe %TEMP%\ptconfigure-install\install-silent && timeout 60"
-echo "Please wait for 60 seconds..its important"
+rem pause
+start /wait cmd /C "%SystemDrive%\php\php.exe %TEMP%\ptconfigure-install\install-silent && timeout 30"
+
 
 REM Install Pharaoh Tools
 echo "Installing all available Pharaoh Tools"
-pause
+rem pause
 REM php Ptconfigure pharaohtools install -yg
 start /wait cmd /C "%SystemDrive%\PharaohTools\ptconfigure.cmd ptvirtualize install -yg"
-pause
+rem pause
 start /wait cmd /C "%SystemDrive%\PharaohTools\ptconfigure.cmd ptdeploy install -yg"
-pause
+rem pause
 start /wait cmd /C "%SystemDrive%\PharaohTools\ptconfigure.cmd pttest install -yg"
-pause
+rem pause
 start /wait cmd /C "%SystemDrive%\PharaohTools\ptconfigure.cmd ptbuild install -yg --with-webfaces"
 REM Thank You for installing message
 echo "Thank you for Installing the latest version of Pharaoh Tools"
