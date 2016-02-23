@@ -30,7 +30,7 @@ REM BFCPEOPTIONEND
 REM Start Nicely
 echo "Our Pharaoh Tools Windows Executable"
 REM Tell Them we're about to start
-timeout 10
+timeout 5
 REM Copy wget from installer to temp dir so we can wget PHP
 echo "Copying wget from installer to %TEMP%\wget.exe"
 copy %MYFILES%\wget.exe %TEMP%\wget.exe
@@ -69,7 +69,6 @@ REM Install the Visual Studio redistributable that php 7 needs
 echo "Installing Visual Studio Redistributable"
 rem pause
 %MYFILES%\vc_redist.x86.exe /install /quiet
-timeout 15
 REM Get the right version to install the right MSU
 setlocal
 for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
@@ -105,21 +104,22 @@ start /wait cmd /C choco install nuget.commandline -y
 REM Install Git
 echo "Installing the latest version of Git"
 rem pause
+timeout 3
 start /wait cmd /C choco install git -y
 REM Get rid of the ptconfigure install files if they do exist
 if exist "%TEMP%\ptconfigure-install" rmdir /S /Q %TEMP%\ptconfigure-install
-REM Download Pharaoh configure, insatll 
+REM Download Pharaoh configure, install 
 echo "Downloading the latest version of Pharaoh Configure to..."
 rem pause
 echo %TEMP%\ptconfigure-install
 timeout 5
 echo "Please wait for 30 seconds..its important"
-start /wait cmd /C git clone https://github.com/PharaohTools/ptconfigure %TEMP%\ptconfigure-install
+git clone https://github.com/PharaohTools/ptconfigure %TEMP%\ptconfigure-install
 timeout 30
 REM Install Pharaoh configure
 echo "Installing the latest version of Pharaoh Configure"
 rem pause
-start /wait cmd /C "%SystemDrive%\php\php.exe %TEMP%\ptconfigure-install\install-silent && timeout 30"
+cmd /C "%SystemDrive%\php\php.exe %TEMP%\ptconfigure-install\install-silent && timeout 30"
 
 
 REM Install Pharaoh Tools
