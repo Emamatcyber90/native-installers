@@ -146,13 +146,18 @@ REM Install Pharaoh Tools
 echo "Installing all available Pharaoh Tools"
 rem pause
 REM php Ptconfigure pharaohtools install -yg
-start /wait cmd /C "%SystemDrive%\PharaohTools\ptconfigure.cmd ptvirtualize install -yg"
+timeout 20
+cd %SystemDrive%\PharaohTools
+cmd /C "%SystemDrive%\PharaohTools\ptconfigure.cmd ptvirtualize install -yg"
 rem pause
-start /wait cmd /C "%SystemDrive%\PharaohTools\ptconfigure.cmd ptdeploy install -yg"
+cd %SystemDrive%\PharaohTools
+cmd /C "%SystemDrive%\PharaohTools\ptconfigure.cmd ptdeploy install -yg"
 rem pause
-start /wait cmd /C "%SystemDrive%\PharaohTools\ptconfigure.cmd pttest install -yg"
+cd %SystemDrive%\PharaohTools
+cmd /C "%SystemDrive%\PharaohTools\ptconfigure.cmd pttest install -yg"
 rem pause
-start /wait cmd /C "%SystemDrive%\PharaohTools\ptconfigure.cmd ptbuild install -yg --with-webfaces"
+cd %SystemDrive%\PharaohTools
+cmd /C "%SystemDrive%\PharaohTools\ptconfigure.cmd ptbuild install -yg --with-webfaces"
 REM Thank You for installing message
 echo "Thank you for Installing the latest version of Pharaoh Tools"
 REM Ending
