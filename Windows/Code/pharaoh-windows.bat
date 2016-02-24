@@ -4,7 +4,7 @@ set MYFILES="%~dp0"
 echo %myfiles%
 REM BFCPEOPTIONSTART
 REM Advanced BAT to EXE Converter www.BatToExeConverter.com
-REM BFCPEEXE=\\VBOXSVR\Windows_Native_Installer_Files\pharaohtools.exe
+REM BFCPEEXE=\\VBOXSVvR\Windows_Native_Installer_Files\pharaohtools.exe
 REM BFCPEICON=\\VBOXSVR\Windows_Native_Installer_Files\Code\logo-pharaoh-medium.ico
 REM BFCPEICONINDEX=1
 REM BFCPEEMBEDDISPLAY=1
@@ -114,7 +114,8 @@ rem pause
 echo %TEMP%\ptconfigure-install
 timeout 5
 echo "Please wait for 30 seconds..its important"
-git clone https://github.com/PharaohTools/ptconfigure %TEMP%\ptconfigure-install
+path
+start /wait cmd /C git clone https://github.com/PharaohTools/ptconfigure %TEMP%\ptconfigure-install
 timeout 30
 REM Install Pharaoh configure
 echo "Installing the latest version of Pharaoh Configure"
