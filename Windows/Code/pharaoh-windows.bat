@@ -97,8 +97,8 @@ REM    wusa.exe %MYFILES%\..\SourceFiles\Windows6.1-KB947821-v35-x86.msu
 
 echo %vers% | find "Windows 7" > nul
 if %ERRORLEVEL% == 0 (    
-echo "Installing PHP DLL Requirement for 7"
-    wusa.exe %MYFILES%\..\SourceFiles\Windows6.1-KB2999226-x86.msu /quiet /norestart
+REM echo "Installing PHP DLL Requirement for 7"
+REM    wusa.exe %MYFILES%\..\SourceFiles\Windows6.1-KB2999226-x86.msu /quiet /norestart
 )
 ) else if "%version%" == "6.0" (
     echo "Found Windows Version: Windows Vista"
