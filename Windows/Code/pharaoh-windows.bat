@@ -134,7 +134,7 @@ timeout 5
 echo "Please wait for 30 seconds..its important"
 path
 cd "C:\Program Files\Git\cmd"
-start /wait cmd /C git clone https://github.com/PharaohTools/ptconfigure %TEMP%\ptconfigure-install
+git clone https://github.com/PharaohTools/ptconfigure %TEMP%\ptconfigure-install
 timeout 30
 REM Install Pharaoh configure
 echo "Installing the latest version of Pharaoh Configure"
