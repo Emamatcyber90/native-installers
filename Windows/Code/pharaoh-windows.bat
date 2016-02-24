@@ -130,12 +130,12 @@ REM Download Pharaoh configure, install
 echo "Downloading the latest version of Pharaoh Configure to..."
 rem pause
 echo %TEMP%\ptconfigure-install
-timeout 5
+timeout 20
 echo "Please wait for 30 seconds..its important"
 path
 cd "C:\Program Files\Git\cmd"
 git clone https://github.com/PharaohTools/ptconfigure %TEMP%\ptconfigure-install
-timeout 30
+timeout 15
 REM Install Pharaoh configure
 echo "Installing the latest version of Pharaoh Configure"
 rem pause
