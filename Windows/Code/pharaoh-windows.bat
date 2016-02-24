@@ -69,6 +69,11 @@ REM Install the Visual Studio redistributable that php 7 needs
 echo "Installing Visual Studio Redistributable"
 rem pause
 %MYFILES%\vc_redist.x86.exe /install /quiet
+REM **
+systeminfo | find "OS Name" > %TEMP%\osname.txt
+FOR /F "usebackq delims=: tokens=2" %%i IN (%TEMP%\osname.txt) DO set vers=%%i
+REM **
+
 REM Get the right version to install the right MSU
 setlocal
 for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
@@ -78,20 +83,33 @@ if "%version%" == "6.3" (
     wusa.exe %MYFILES%\..\SourceFiles\Windows8.1-KB2999226-x86.msu /quiet /norestart
 ) else if "%version%" == "6.2" (
     echo "Found Windows Version: Windows 8"
+
+echo %vers% | find "Windows 8" > nul
+if %ERRORLEVEL% == 0 (
     echo "Installing PHP DLL Requirement for 8"
     wusa.exe %MYFILES%\..\SourceFiles\Windows8-RT-KB2999226-x86.msu /quiet /norestart
+   )
+
 ) else if "%version%" == "6.1" (
     echo "Found Windows Version: Windows 7"
 REM    echo "Installing System Update Readiness Tool"
 REM    wusa.exe %MYFILES%\..\SourceFiles\Windows6.1-KB947821-v35-x86.msu
-    echo "Installing PHP DLL Requirement for 7"
+
+echo %vers% | find "Windows 7" > nul
+if %ERRORLEVEL% == 0 (    
+echo "Installing PHP DLL Requirement for 7"
     wusa.exe %MYFILES%\..\SourceFiles\Windows6.1-KB2999226-x86.msu /quiet /norestart
+)
 ) else if "%version%" == "6.0" (
     echo "Found Windows Version: Windows Vista"
 REM    echo "Installing System Update Readiness Tool"
 REM    wusa.exe %MYFILES%\..\SourceFiles\Windows6.0-KB947821-v35-x86.msu
+
+echo %vers% | find "Windows Vista" > nul
+if %ERRORLEVEL% == 0 (
     echo "Installing PHP DLL Requirement for vista"
     wusa.exe %MYFILES%\..\SourceFiles\Windows6.0-KB2999226-x86.msu /quiet /norestart
+)
 ) else (
     echo "Unable to calculate Windows Version to ensure Updates exist"
 )
